@@ -93,10 +93,14 @@ class EditHabit:
 
         db.execute(f"UPDATE habit_data SET {self.purpose} = '{self.new_value}'"
                    f"WHERE name = '{self.habit_name}';")
-
         db.commit()
-        table = get_table(db, thing='name', value=self.habit_name)
-        print(table)
+
+        if self.purpose == "name":
+            table = get_table(db, thing='name', value=self.new_value)
+            print(table)
+        else:
+            table = get_table(db, thing='name', value=self.habit_name)
+            print(table)
 
 
 class AnalyzeHabit:
