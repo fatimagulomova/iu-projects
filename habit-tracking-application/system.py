@@ -1,5 +1,4 @@
 import datetime as dt
-from dateutil.relativedelta import relativedelta
 import questionary
 from db import *
 import sqlite3
@@ -24,39 +23,22 @@ class AddHabit:
                     Adds a new habit and stores it in the database
     """
 
-    def add_habit(self, name: str, category: str, frequency: str, duration: str,
-                  unitset: str, start_date: str, file_db):
+    def add_habit(self, name: str, category: str, frequency: str, duration: str, file_db):
 
         """
         :param name: the name of the habit
         :param category: the category of the habit
         :param frequency: the frequency of the habit
         :param duration: how long the habit lasts
-        :param unitset: the unit set of the habit
-        :param start_date: the start date of the habit (YYYY/MM/DD)
         :param file_db: the name of the db file
         """
 
-        start_date = start_date
-        end_date = ""
-
-        date = start_date.replace('/', ' ').split()
-        s_duration = duration.split()
-
-        if s_duration[1] == "days":
-            end_date = (dt.datetime(int(date[0]), int(date[1]), int(date[2])) +
-                        dt.timedelta(days=int(s_duration[0]))).strftime("%Y/%m/%d")
-        elif s_duration[1] == "weeks":
-            end_date = (dt.datetime(int(date[0]), int(date[1]), int(date[2])) +
-                        dt.timedelta(weeks=int(s_duration[0]))).strftime("%Y/%m/%d")
-        elif s_duration[1] == "months":
-            end_date = (dt.datetime(int(date[0]), int(date[1]), int(date[2])) +
-                        relativedelta(months=int(s_duration[0]))).strftime("%Y/%m/%d")
+        start_date = dt.datetime.now().strftime('%Y/%m/%d')
 
         db = get_db(file_db)
         create_habits(db=db, name=name, category=category, frequency=frequency, duration=duration,
-                      unitset=unitset, start_date=start_date, end_date=end_date, completed=0,
-                      last_completed_day="-", streak_days=0)
+                      start_date=start_date, marked_off=0, last_completed_day="-",
+                      streak_days=0, longest_st_days=0)
 
 
 class EditHabit:
@@ -69,7 +51,7 @@ class EditHabit:
                 new_value: the new value that the users input
 
             Methods:
-                edit(self):
+                edit(self, file_db):
                     Changes the name/category/frequency of the specified habit in the database
 
     """
@@ -118,24 +100,22 @@ class AnalyzeHabit:
                 Gives information about habits
     """
 
-    def check_off(self, name: str, answer: str, file_db):
+    def check_off(self, name: str, file_db):
 
         connection = sqlite3.connect(file_db)
         cursor = connection.cursor()
+        cursor.execute(f"SELECT marked_off FROM habit_data WHERE name = '{name}';")
+        completed = list(cursor.fetchone())[0]
+        cursor.execute(f"SELECT frequency FROM habit_data WHERE name = '{name}';")
+        frequency = list(cursor.fetchone())[0]
 
-        if answer == "yes":
-            cursor.execute(f"SELECT completed FROM habit_data WHERE name = '{name}';")
-            completed = list(cursor.fetchone())[0]
-            cursor.execute(f"SELECT frequency FROM habit_data WHERE name = '{name}';")
-            frequency = list(cursor.fetchone())[0]
+        self.count_streak_days(name, frequency, file_db)
 
-            self.count_streak_days(name, frequency, file_db)
+        now = dt.datetime.now().strftime("%Y/%m/%d")
+        cursor.execute(f"UPDATE habit_data SET marked_off = '{completed + 1}', last_completed_day = '{now}'"
+                       f"WHERE name = '{name}';")
 
-            now = dt.datetime.now().strftime("%Y/%m/%d")
-            cursor.execute(f"UPDATE habit_data SET completed = '{completed + 1}', last_completed_day = '{now}'"
-                           f"WHERE name = '{name}';")
-
-            connection.commit()
+        connection.commit()
 
     def count_streak_days(self, habit_name: str, frequency: str, file_db):
         connection = sqlite3.connect(file_db)
@@ -153,15 +133,30 @@ class AnalyzeHabit:
         cursor.execute(f"SELECT streak_days FROM habit_data WHERE name = '{habit_name}';")
         streak_days = list(cursor.fetchone())[0]
 
+        cursor.execute(f"SELECT longest_streak_days FROM habit_data WHERE name = '{habit_name}';")
+        longest_st_days = list(cursor.fetchone())[0]
+
         if dif == last_completed_day:
             cursor.execute(f"UPDATE habit_data SET streak_days = '{streak_days + 1}'"
                            f"WHERE name = '{habit_name}';")
             connection.commit()
+
+            if longest_st_days <= streak_days + 1:
+                longest_st_days += 1
+                cursor.execute(f"UPDATE habit_data SET longest_streak_days = '{longest_st_days}'"
+                               f"WHERE name = '{habit_name}';")
+                connection.commit()
+
         else:
             streak_days = 1
             cursor.execute(f"UPDATE habit_data SET streak_days = '{streak_days}'"
                            f"WHERE name = '{habit_name}';")
             connection.commit()
+
+            if longest_st_days == 0:
+                cursor.execute(f"UPDATE habit_data SET longest_streak_days = '{longest_st_days + 1}'"
+                               f"WHERE name = '{habit_name}';")
+                connection.commit()
 
     def report(self, purpose: str, file_db):
         table = ""
