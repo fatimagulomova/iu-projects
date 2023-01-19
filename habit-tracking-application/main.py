@@ -25,24 +25,22 @@ def cli():
                                            choices=['daily', 'weekly']).ask()
 
             duration = questionary.text("Please set a duration for your habit e.g 20 days/3 weeks): ").ask().lower()
-            unitset = questionary.text("Please set a unitset for your habit (e.g. 20 minutes/2 hours): ").ask().lower()
-            start_date = questionary.text("When do you want to start? (YYYY/MM/DD): ").ask()
 
             create_habit = AddHabit()
-            create_habit.add_habit(name, category, frequency, duration, unitset, start_date, file_db="data.db")
+            create_habit.add_habit(name, category, frequency, duration, file_db="files/data.db")
             print("\n")
 
         elif purpose == "Edit the existing habit":
             try:
                 habit_name = questionary.select("Which habit do you want to change?",
-                                                choices=habit_names_from_data(file_db="data.db")).ask()
+                                                choices=habit_names_from_data(file_db="files/data.db")).ask()
                 choice = questionary.select("What do you want to change?",
-                                            choices=['name', 'category', 'unitset']).ask()
+                                            choices=['name', 'category', 'duration']).ask()
 
                 new_value = questionary.text(f"Type a new {choice} for the '{habit_name}' habit: ").ask().lower()
 
                 manage_habit = EditHabit(habit_name, choice, new_value)
-                manage_habit.edit(file_db="data.db")
+                manage_habit.edit(file_db="files/data.db")
                 print("\n")
 
             except sqlite3.OperationalError and ValueError:
@@ -57,17 +55,14 @@ def cli():
 
                 if answer == "check":
                     name = questionary.select("Please select:\n",
-                                              choices=habit_names_from_data(file_db="data.db")).ask().lower()
-                    is_completed = questionary.select("Have you completed this task today? \n",
-                                                      choices=['Yes', 'No']).ask().lower()
-
-                    analyze_habit.check_off(name=name, answer=is_completed, file_db="data.db")
+                                              choices=habit_names_from_data(file_db="files/data.db")).ask().lower()
+                    analyze_habit.check_off(name=name, file_db="files/data.db")
 
                 elif answer == "report":
                     purpose = questionary.select("Do you want to report all habits or one habit?",
                                                  choices=['All Habits', 'All Daily Habits',
                                                           'All Weekly Habits', 'One Habit']).ask().lower()
-                    analyze_habit.report(purpose, file_db="data.db")
+                    analyze_habit.report(purpose, file_db="files/data.db")
                 print("\n")
 
             except sqlite3.OperationalError and ValueError:
@@ -76,15 +71,15 @@ def cli():
 
         elif purpose == "Predefined Habits":
             habit = PredefinedHabits()
-            habit.report_predefined_habits(file_db="predefined-habits.db")
+            habit.report_predefined_habits(file_db="files/predefined-habits.db")
 
         elif purpose == "Delete the habit":
             try:
                 habit_name = questionary.select("Which habit do you want to delete?",
-                                                choices=habit_names_from_data(file_db="data.db")).ask()
+                                                choices=habit_names_from_data(file_db="files/data.db")).ask()
                 habit = DeleteHabit()
 
-                habit.delete_the_habit(name=habit_name, file_db="data.db")
+                habit.delete_the_habit(name=habit_name, file_db="files/data.db")
                 print("\n")
 
             except sqlite3.OperationalError and ValueError:
