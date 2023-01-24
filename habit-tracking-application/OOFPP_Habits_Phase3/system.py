@@ -77,13 +77,6 @@ class EditHabit:
                    f"WHERE name = '{self.habit_name}';")
         db.commit()
 
-        if self.purpose == "name":
-            table = get_table(db, thing='name', value=self.new_value)
-            print(table)
-        else:
-            table = get_table(db, thing='name', value=self.habit_name)
-            print(table)
-
 
 class AnalyzeHabit:
     """
