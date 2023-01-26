@@ -18,8 +18,8 @@ class AddHabit:
     """
         This class creates a habit and stores it in "data.db"
 
-            Methods:
-                add_habit(self, name, category, frequency, duration, unitset, start_date)
+            Method:
+                add_habit(self, name, category, frequency, duration, file_db)
                     Adds a new habit and stores it in the database
     """
 
