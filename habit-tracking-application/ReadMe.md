@@ -11,7 +11,7 @@ This application will help you develop good habits and achieve your goals. It wi
 
 ![Flowchart (1)](https://user-images.githubusercontent.com/110629449/215483423-4f0388ca-5f7a-4503-a209-7bcc6d2686b2.jpg)
 ## How to start 
-Before to start make sure that you have Python 3.9+ installed on your device or you can intall it: https://www.python.org/downloads/
+Before to start make sure that you have Python 3.9+ on your device or you can download it: https://www.python.org/downloads/
 #### Impotant packages: 
 
 * tabulate~=0.8.10 "pip install tabulate"
