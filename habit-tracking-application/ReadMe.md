@@ -19,4 +19,4 @@ Before to start make sure that you have Python 3.9+ on your device or you can do
 * pytest~=7.2.0 "pip install -U pytest"
 
 ## Contributing
-This my first Python project. Your feedback, ideas, and contributions are welcomed!
+This is my first Python project. Your feedback, ideas, and contributions are welcomed!
