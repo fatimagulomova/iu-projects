@@ -5,6 +5,9 @@ import sqlite3
 
 
 def habit_names_from_data(file_db):
+    """This function is responsible for extracting habit names from the database file.
+        :param file_db: the name of the db file
+     """
     connection = sqlite3.connect(file_db)
     cursor = connection.cursor()
 
