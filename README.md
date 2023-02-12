@@ -1,1 +1,1 @@
-# iu-projects
+# IU Projects
