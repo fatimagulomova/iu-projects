@@ -19,7 +19,7 @@ The purpose of this task is to evaluate a large dataset of policing activities c
 ### Task 1: Host a simple webpage on AWS
 Design and implement a highly available, low-latency website on AWS using Amazon S3 bucket for hosting and CloudFront for content delivery using Infrastructure as Code (IaC) tools like Terraform for reproducibility. The goal of the task is to host an “index” HTML file, guaranteeing high availability, minimizing latency, and enabling auto-scaling for optimal performance.
 
-**Duration:** November 10, 2023 - December 25, 2023
+**Duration:** November 10, 2023 - December 10, 2023
 
 **Grade:** 100 out of 100
    
