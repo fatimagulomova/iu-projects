@@ -20,3 +20,5 @@ Design and implement a highly available, low-latency website on AWS using Amazon
 ## DLBAIPCV01 — Project: Computer Vision
 ### Task 2: Recognizing Objects in Video Sequences
 This project aims to develop a computer vision system that accurately detects and segments objects in video. I used state-of-the-art object detection and segmentation algorithms. Firstly, I implemented three SoA approaches: YOLO, SSD, and Faster R-CNN and evaluated their performance. Then, I analysed the results visually and highlighted their strengths and weaknesses. Next, I determined the best-performing approach based on evaluation and analysis. Link: https://drive.google.com/drive/folders/1NdpVsZzHaaUc4d0PXXzEveJfNaLGTQd4?usp=sharing 
+
+**Grade:** 87 out 100
