@@ -22,3 +22,8 @@ Design and implement a highly available, low-latency website on AWS using Amazon
 This project aims to develop a computer vision system that accurately detects and segments objects in video. I used state-of-the-art object detection and segmentation algorithms. Firstly, I implemented three SoA approaches: YOLO, SSD, and Faster R-CNN and evaluated their performance. Then, I analysed the results visually and highlighted their strengths and weaknesses. Next, I determined the best-performing approach based on evaluation and analysis. Link: https://drive.google.com/drive/folders/1NdpVsZzHaaUc4d0PXXzEveJfNaLGTQd4?usp=sharing 
 
 **Grade:** 87 out 100
+
+## DLBAIPNLP01 — Project: NLP
+### Task 2: Sentiment Analysis on Movie Reviews
+A sentiment analysis project on movie reviews compares Logistic Regression, SVM, Random Forest, and LSTM. It covers text preprocessing and model evaluation to provide an overview of machine learning and deep learning methods for binary classification. 
+Links: https://medium.com/@fatimakhongulomova/from-logistic-regression-to-lstm-a-sentiment-analysis-case-study-on-movie-reviews-66fabd8cfaaf; https://www.kaggle.com/code/fotimakhongulomova/sentiment-analysis-on-movie-reviews
